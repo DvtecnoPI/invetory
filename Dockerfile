@@ -1,7 +1,7 @@
-# Etapa 1: Construcción del backend (Laravel con PHP-FPM)
+# Usar PHP-FPM como base
 FROM php:8.2-fpm AS backend
 
-# Instalar dependencias necesarias para Laravel
+# Instalar dependencias necesarias
 RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev zip git nginx \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql
@@ -23,12 +23,29 @@ COPY .env.example .env
 # Configurar permisos
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Copiar la configuración de Nginx
-COPY ./nginx/default.conf /etc/nginx/sites-available/default
+# Configuración de Nginx directamente en el Dockerfile
+RUN echo "\
+server {\
+    listen 80;\
+    server_name _;\
+    root /var/www/public;\
+    index index.php index.html index.htm;\
+    location / {\
+        try_files \$uri \$uri/ /index.php?\$query_string;\
+    }\
+    location ~ \\.php\$ {\
+        fastcgi_pass 127.0.0.1:9000;\
+        fastcgi_index index.php;\
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;\
+        include fastcgi_params;\
+    }\
+    location ~ \\/\\.ht {\
+        deny all;\
+    }\
+}" > /etc/nginx/sites-available/default
 
-# Exponer los puertos 80 para HTTP
+# Exponer el puerto 80 para Nginx
 EXPOSE 80
 
-# Comando para iniciar Nginx y PHP-FPM
+# Comando para iniciar PHP-FPM y Nginx
 CMD service php8.2-fpm start && nginx -g 'daemon off;'
-
