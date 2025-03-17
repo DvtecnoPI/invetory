@@ -4,8 +4,8 @@ FROM node:16 AS frontend
 # Establecer el directorio de trabajo para el frontend
 WORKDIR /app
 
-# Copiar el package.json y el package-lock.json o yarn.lock
-COPY resources/package.json resources/package-lock.json ./
+# Copiar el package.json y el package-lock.json
+COPY package.json package-lock.json ./
 
 # Instalar dependencias de Node.js
 RUN npm install
