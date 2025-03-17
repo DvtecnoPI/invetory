@@ -12,11 +12,12 @@
 
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-    @dd('Sí, se cumple la condición')
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-@else
-    @dd('No, no se cumple la condición')
-@endif
+        @dd('Sí, se cumple la condición')
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        @dd('No, no se cumple la condición')
+    @endif
+
 
     </head>
     <body class="flex-1 overflow-y-auto p-6 font-sans antialiased bg-gray-100">
