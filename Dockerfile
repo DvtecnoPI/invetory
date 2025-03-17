@@ -1,5 +1,6 @@
 # Etapa 1: Construcción del backend (Laravel)
-FROM php:8.1-fpm AS backend
+FROM php:8.2-fpm AS backend
+
 
 # Instalar dependencias necesarias para Laravel
 RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev zip git \
