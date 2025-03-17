@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+    db:
+        image: mysql:latest
+        container_name: mysql-db
+        restart: always  # <- Agregado para que el contenedor se inicie automáticamente
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # Contraseña para el root (puedes cambiarla)
+            MYSQL_DATABASE: ${DB_DATABASE} # Nombre de la base de datos a crear (puedes cambiarlo)
+            MYSQL_USER: ${DB_USERNAME} # Usuario
+            MYSQL_PASSWORD: ${DB_PASSWORD} # Contraseña del usuario
+        ports:
+            - "3306:3306" # Puerto para acceder desde fuera del contenedor
+        volumes:
+            - mysql_data:/var/lib/mysql # Volumen para persistir los datos
+    # mailhog:
+    #     image: mailhog/mailhog
+    #     ports:
+    #         - "1025:1025" # Puerto SMTP
+    #         - "8025:8025" # Puerto de interfaz web
+
+volumes:
+    mysql_data:
+        driver: local
