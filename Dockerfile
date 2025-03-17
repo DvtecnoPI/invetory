@@ -47,5 +47,6 @@ server {\
 # Exponer el puerto 80 para Nginx
 EXPOSE 80
 
-# Comando para iniciar PHP-FPM y Nginx
-CMD service php8.2-fpm start && nginx -g 'daemon off;'
+# Comando para iniciar PHP-FPM manualmente y Nginx
+CMD php-fpm -D && nginx -g 'daemon off;'
+
